@@ -56,7 +56,7 @@ class Coupon extends Component {
     render() {
         const { checked } = this.state;
         const checkedCount = Object.keys(checked).filter(key => checked[key]).length;
-        const disabled = checkedCount === 1;
+        const disabled = checkedCount == 1;
 
 
         return (

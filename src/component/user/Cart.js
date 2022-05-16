@@ -21,6 +21,7 @@ import CbFooter from "../utils/CbFooter";
 import SignUp from "./SignUp";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
+import Coupon from "./Coupon";
 import LocalOfferOutlinedIcon from '@material-ui/icons/LocalOfferOutlined';
 
 class Cart extends Component {
@@ -147,6 +148,14 @@ class Cart extends Component {
         this.setState({
             orderID: 4321123
         }, () => this.props.history.push(`/orders/successful/${this.state.orderID}`))
+        // new AdminService().placedOrder(this.state.totalPrice).then(response => {
+        //     this.setState({
+        //         orderID: response.data.data
+        //     }, () => this.props.history.push(`/orders/successful/${this.state.orderID}`))
+        // }).catch((error) => {
+        //     console.log(error)
+        // })
+        // console.log('get my order')
     }
 
 
@@ -163,16 +172,22 @@ class Cart extends Component {
         this.buttonVisibility()
     }
 
-    // getDetails = () => {
-    //     const data = {
-    //         pincode: this.state.pincode,
-    //         locality: this.state.locality,
-    //         address: this.state.address,
-    //         city: this.state.city,
-    //         landmark: this.state.landmark,
-    //         addressType: this.state.addressType,
-    //     }
-    // }
+    getDetails = () => {
+        const data = {
+            pincode: this.state.pincode,
+            locality: this.state.locality,
+            address: this.state.address,
+            city: this.state.city,
+            landmark: this.state.landmark,
+            addressType: this.state.addressType,
+        }
+
+        // new AdminService().getDetails(data).then(response => {
+        //     console.log(response)
+        // }).catch((error) => {
+        //     console.log(error)
+        // })
+    }
 
 
     handleCheckOut = () => {
@@ -207,9 +222,15 @@ class Cart extends Component {
     }
 
     handleCart = () => {
+       // new AdminService().myCart().then(response => {
             this.setState({
                 checkoutData: new AdminService().myCart()
             })
+        /*}).catch((error) => {
+            this.setState({
+                checkoutData: []
+            })
+        })*/
     }
 
     setTotalValue = () => {
@@ -246,11 +267,11 @@ class Cart extends Component {
         }
     }
 
-    // getCoupon = () => {
-    //     this.setState({
-    //         visibilityOfDialogBox: true
-    //     })
-    // }
+    getCoupon = () => {
+        this.setState({
+            visibilityOfDialogBox: true
+        })
+    }
 
     handleClose = () => {
         this.setState({
@@ -410,13 +431,14 @@ class Cart extends Component {
                                             required={true}
                                             label="Locality"
                                             id="locaLity"
-                                            className="locality-text textfields"
+                                            className="locality-text"
                                             error={this.state.localityError}
                                             name="locality"
                                             onChange={this.changeState}
                                             onBlur={(e) => this.localityValidation(e, "localityError")}
                                             helperText={this.state.locaLity}
-                                            variant="outlined" disabled={this.state.text}
+                                            variant="outlined"
+                                            className="textfields" disabled={this.state.text}
                                         />
                                     </div>
                                     <div className="address">
@@ -535,6 +557,26 @@ class Cart extends Component {
                                             )}
 
                                     </div>
+
+
+                                    {/* <div className="coupon-div">
+                                        <b>Coupons</b>
+                                        <div className="coupon-div1">
+                                            <LocalOfferOutlinedIcon id="offer-icon"/>
+                                            {this.state.couponStatus === "applied" ?
+                                                <div className="coupon-div1-sub">
+                                                    <p className="coupon-sub-title">1 Coupon Applied</p>
+                                                    <Button id="coupon-apply-btn" onClick={this.getCoupon}>Edit</Button>
+                                                </div>
+                                                :
+                                                <div className="coupon-div1-sub">
+                                                    <p className="coupon-sub-title">Apply Coupons</p>
+                                                    <Button id="coupon-apply-btn"
+                                                            onClick={this.getCoupon}>Apply</Button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div> */}
                                     <Divider/>
                                     <div>
                                         <p><b>Price details</b></p>
@@ -561,6 +603,14 @@ class Cart extends Component {
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                     </Container>
+                    <Dialog className="coupon-dialog-box" aria-labelledby="customized-dialog-title"
+                            open={this.state.visibilityOfDialogBox} onClose={this.handleClose}>
+                        <DialogContent id="dialoguecontent" id2="customized-dialog-title">
+                            <Coupon coupons={this.state.coupons} totalPrice={this.state.totalPrice}
+                                    handleTotalPrice={this.handleTotalPrice} index={this.state.index}
+                                    handleDialogVisibility={this.handleCancel}/>
+                        </DialogContent>
+                    </Dialog>
                     <CbFooter/>
                 </div>
             );

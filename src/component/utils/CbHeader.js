@@ -18,7 +18,7 @@ import SignUp from "../user/SignUp";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
-// import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 
 export class CbHeader extends Component {
@@ -106,7 +106,7 @@ export class CbHeader extends Component {
                 userLoggedIn: true
             })}
 
-        if(user === "null" || user === "undefined"){
+        if(user == "null" || user == "undefined"){
             this.setState({
                 logorsign: "LOGIN/SIGNUP",
                 redirect: "login",
